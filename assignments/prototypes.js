@@ -16,10 +16,10 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
-let GameObject = function() {
-  this.createdAt = createdAt;
-  this.name = name;
-  this.dimensions = dimensions;
+let GameObject = function(props) {
+  this.createdAt = props.createdAt;
+  this.name = props.name;
+  this.dimensions = props.dimensions;
 }
 
 GameObject.prototype.destroy = function () {
@@ -31,8 +31,9 @@ GameObject.prototype.destroy = function () {
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
-let CharacterStats = function (){
-  this.healthPoints = healthPoints;
+let CharacterStats = function (props){
+  GameObject.call(this, props)
+  this.healthPoints = props.healthPoints;
 }
 
 CharacterStats.prototype = Object.create(GameObject.prototype)
@@ -50,12 +51,12 @@ CharacterStats.prototype.takeDamage = function () {
   * should inherit takeDamage() from CharacterStats
 */
 let Humanoid = function(props){
+  CharacterStats.call(this, props)
   this.team = props.team;
   this.weapons = props.weapons;
   this.language = props.language;
 }
 Humanoid.prototype = Object.create(CharacterStats.prototype)
-
 Humanoid.prototype.greet = function(){
   return `${this.name} offers a greeting in ${this.language}.`
 }
@@ -118,7 +119,7 @@ Humanoid.prototype.greet = function(){
     ],
     language: 'Elvish',
   });
-
+  console.log(mage)
   console.log(mage.createdAt); // Today's date
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
   console.log(swordsman.healthPoints); // 15
